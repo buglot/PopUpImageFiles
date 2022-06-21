@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QMainWindow,QMenuBar,QFileDialog
 from PyQt6.QtGui import QAction
 import inList
 class window(QMainWindow):
-    def __init__(self):
+    def __init__(self,path=None):
         super().__init__()
         self.setWindowTitle("PopUp Images")
         self.setGeometry(0,0,200,300)
@@ -22,7 +22,7 @@ class window(QMainWindow):
             #add ลงไป ลง menu File
         self.__menu_File.addActions((self.__inFile_file,self.__inFile_exit))
         self.setMenuBar(self.__menubar)
-        self.setCentralWidget(inList.applist_image())
+        self.setCentralWidget(inList.applist_image(path))
     def __Openfiles(self):
         o = QFileDialog()
         a= o.getExistingDirectory(self,'Open dir',"",QFileDialog.Option.ShowDirsOnly)
