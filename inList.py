@@ -24,10 +24,8 @@ class applist_image(QWidget):
                 self.__dirs[file] = name_and_path(file,self.__PATH)
     def clicks_list(self,ss):
         if os.path.exists(self.__dirs[self.__list.currentItem().text()].getFilePath()):
-            e =imagsShow.showIMG(self.__dirs[self.__list.currentItem().text()].getFilePath())
-            e.show()
-            s=self.__dirs[self.__list.currentItem().text()]
-            print(s.getFilePath())
+            self.e =imagsShow.showIMG(self.__dirs[self.__list.currentItem().text()].getFilePath())
+            self.e.show()
         else:
             QMessageBox.warning(self,"Error",'หาไฟล์ไม่เจอ',QMessageBox.StandardButton.Ok)
 

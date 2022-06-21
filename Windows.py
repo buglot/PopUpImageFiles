@@ -1,10 +1,11 @@
 from PyQt6.QtWidgets import QMainWindow,QMenuBar,QFileDialog
-from PyQt6.QtGui import QAction,QActionEvent
+from PyQt6.QtGui import QAction
 import inList
 class window(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("PopUp Images")
+        self.setGeometry(0,0,200,300)
         #make munubar
         self.__menubar = QMenuBar()
         self.__menu_File = self.__menubar.addMenu("File")
