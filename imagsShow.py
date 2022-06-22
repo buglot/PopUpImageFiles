@@ -1,44 +1,54 @@
 from email.charset import QP
 import imp
 from re import T
+from time import sleep
 from tkinter.tix import Tree
 from typing_extensions import Self
 from PyQt6.QtWidgets import QWidget,QGraphicsView,QHBoxLayout,QVBoxLayout,QSizePolicy,QScrollArea,QPushButton,QGraphicsScene, QGraphicsPixmapItem
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtCore import QSize,Qt
+from PyQt6.QtCore import QSize,Qt,QRectF
+import time
 import numpy
 class showIMG(QWidget):
     def __init__(self,filenames):
         super().__init__()
-        self.setGeometry(0,0,600,600)
+        self.setWindowState(Qt.WindowState.WindowMaximized)
+        self.ew=self.geometry()
+        self.setWindowState(Qt.WindowState.WindowNoState)
+        self.setGeometry(60,100,600,600)
         self.__pre_img = QPixmap(filenames)
+        if self.__pre_img.height() >=self.ew.height():
+            self.setWindowState(Qt.WindowState.WindowMaximized)
         self.sase=QGraphicsScene()
         self.mainPhoto=QGraphicsView(self.sase)
         self.__img=QGraphicsPixmapItem(self.__pre_img)
         self.sase.addItem(self.__img)
 
         self.__la = QVBoxLayout()
-        self.__buttons = QPushButton("Full")
+        self.__buttons = QPushButton("Full Image")
+        self.__buttons1 = QPushButton("Fit Full")
         self.__buttons.clicked.connect(self.full_click)
+        self.__buttons1.clicked.connect(self.fitFulll_click)
         if len(filenames)<=10:
             self.__strs=filenames
         else:
-            self.__strs=filenames[0:9]+"***"+filenames[-1:-5:-1][::-1]
+            self.__strs=filenames[0:9]+"***"+filenames[-1:-22:-1][::-1]
         self.__layout = QHBoxLayout()
         self.__la.addLayout(self.__layout)
-        self.setWindowTitle("Show img"+self.__strs)
+        self.setWindowTitle("Show img :"+self.__strs)
         self.setLayout(self.__la)
         self.__layout.addWidget(self.mainPhoto)
-        self.__la.addWidget(self.__buttons)
+        self.__layout2 = QHBoxLayout()
+        self.__layout2.addWidget(self.__buttons1)
+        self.__layout2.addWidget(self.__buttons)
+        self.__la.addLayout(self.__layout2)
         self.resizeEvent = self.__autoREsize
-        self.mainPhoto.fitInView(self.sase.sceneRect(),Qt.AspectRatioMode.KeepAspectRatio)
         self.mainPhoto.moveEvent =self.a
         self.wheelEvent =self.WheelEvents
         self.mainPhoto.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        
+        self.mainPhoto.fitInView(self.sase.sceneRect(),Qt.AspectRatioMode.IgnoreAspectRatio)
     def a(self,s):
         self.pointMouse =s
-        print(s.pos())
     def WheelEvents(self,event):
         
         zoomInFactor = 1.25
@@ -58,4 +68,6 @@ class showIMG(QWidget):
     def __autoREsize(self,e):
         self.mainPhoto.fitInView(self.sase.sceneRect(),Qt.AspectRatioMode.KeepAspectRatio)
     def full_click(self):
+        self.mainPhoto.fitInView(QRectF(self.ew),Qt.AspectRatioMode.KeepAspectRatioByExpanding)
+    def fitFulll_click(self):
         self.mainPhoto.fitInView(self.sase.sceneRect(),Qt.AspectRatioMode.KeepAspectRatioByExpanding)

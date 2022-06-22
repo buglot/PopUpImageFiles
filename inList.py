@@ -16,12 +16,18 @@ class applist_image(QWidget):
         self.__list.itemClicked.connect(self.clicks_list)
 
         self.__layout.addWidget(self.__list)
-    def Works(self,bools :bool):
+    def Works(self,bools):
         self.__dirs={}
-        if bools:
+        if bools==1:
             for file in os.listdir(self.__PATH):
                 self.__list.addItem(file)
                 self.__dirs[file] = name_and_path(file,self.__PATH)
+        elif bools==2:
+            self.e =imagsShow.showIMG(self.__PATH)
+            self.e.show()
+            for file in os.listdir(os.path.dirname(self.__PATH)):
+                self.__list.addItem(file)
+                self.__dirs[file] = name_and_path(file,os.path.dirname(self.__PATH))
     def clicks_list(self,ss):
         if os.path.exists(self.__dirs[self.__list.currentItem().text()].getFilePath()):
             self.e =imagsShow.showIMG(self.__dirs[self.__list.currentItem().text()].getFilePath())
@@ -33,7 +39,10 @@ class applist_image(QWidget):
 
     def __checkPath(self,path):
         if path!=None:
-            return True
+            if os.path.isdir(os.path.realpath(path)):
+                return 1
+            else:
+                return 2
         else:
             return False
 
