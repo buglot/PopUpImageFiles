@@ -5,7 +5,7 @@ class window(QMainWindow):
     def __init__(self,path=None):
         super().__init__()
         self.setWindowTitle("PopUp Images")
-        self.setGeometry(0,0,200,300)
+        self.setGeometry(0,0,400,300)
         #make munubar
         self.__menubar = QMenuBar()
         self.__menu_File = self.__menubar.addMenu("File")
